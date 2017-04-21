@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:ovs="http://www.online.vs/VoterService/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="VoterService"
+	targetNamespace="http://www.online.vs/VoterService/" xmlns:ovt="http://www.online.vs/VoterService/types">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.online.vs/VoterService/types"
+			xmlns:ovt="http://www.online.vs/VoterService/types">
+			<xsd:element name="VoterInfo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="voterId" type="xsd:int" />
+						<xsd:element name="name" type="xsd:string" />
+						<xsd:element name="state" type="xsd:string" />
+						<xsd:element name="dist" type="xsd:string" />
+						<xsd:element name="gender" type="xsd:string" />
+						<xsd:element name="age" type="xsd:int" />
+						<xsd:element name="voterType" type="xsd:string" />
+						<xsd:element name="candidatesSign" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="VoterResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="voterId" type="xsd:int" />
+						<xsd:element name="response" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- Request and response for getVoteDetailsByVoterId -->
+			<!-- REQUEST -->
+			<xsd:element name="voterId" type="xsd:string" />
+			<!-- RESPONSE -->
+			<xsd:element name="User">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="ovt:VoterInfo" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<!-- Request and Response for getVoteActivity -->
+			<!-- REQUEST -->
+			<xsd:element name="voterType" type="xsd:string" />
+			<!-- RESPONSE -->
+			<xsd:element name="ActivityResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="voteCount" type="xsd:int" />
+						<xsd:element ref="ovt:VoterInfo" minOccurs="1"
+							maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="ServiceFaultType">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="errorCode" type="xsd:int" />
+						<xsd:element name="errorMessage" type="xsd:string" />
+						<xsd:element name="errorDescription" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="VoterService_addVote">
+		<wsdl:part element="ovt:VoterInfo" name="input" />
+	</wsdl:message>
+	<wsdl:message name="VoterService_addVoteResponse">
+		<wsdl:part element="ovt:VoterResponse" name="output" />
+	</wsdl:message>
+	<wsdl:message name="ServiceActivityException">
+		<wsdl:part element="ovt:ServiceFaultType" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="VoterService_getVoteDetailsByVoterId">
+		<wsdl:part element="ovt:voterId" name="input" />
+	</wsdl:message>
+	<wsdl:message name="VoterService_getVoteDetailsByVoterIdResponse">
+		<wsdl:part element="ovt:User" name="output" />
+	</wsdl:message>
+
+	<wsdl:message name="VoterService_getVoteActivity">
+		<wsdl:part element="ovt:voterType" name="input" />
+	</wsdl:message>
+	<wsdl:message name="VoterService_getVoteActivityResponse">
+		<wsdl:part element="ovt:ActivityResponse" name="output" />
+	</wsdl:message>
+	<wsdl:portType name="OnlineVoterService">
+		<wsdl:operation name="addVote">
+			<wsdl:input message="ovs:VoterService_addVote" />
+			<wsdl:output message="ovs:VoterService_addVoteResponse" />
+			<wsdl:fault name="ServiceActivityException" message="ovs:ServiceActivityException" />
+		</wsdl:operation>
+		<wsdl:operation name="getVoteDetailsByVoterId">
+			<wsdl:input message="ovs:VoterService_getVoteDetailsByVoterId" />
+			<wsdl:output message="ovs:VoterService_getVoteDetailsByVoterIdResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getVoteActivity">
+			<wsdl:input message="ovs:VoterService_getVoteActivity" />
+			<wsdl:output message="ovs:VoterService_getVoteActivityResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="VoterServiceSOAPBinding" type="ovs:OnlineVoterService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+			<wsdl:operation name="addVote">
+		<soap:operation soapAction="" />
+		<wsdl:input>
+			<soap:body use="literal" />
+		</wsdl:input>
+		<wsdl:output>
+			<soap:body use="literal" />
+		</wsdl:output>
+		<wsdl:fault name="ServiceActivityException">
+			<soap:fault name="ServiceActivityException" use="literal" />
+		</wsdl:fault>
+	</wsdl:operation>
+
+		<wsdl:operation name="getVoteDetailsByVoterId">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getVoteActivity">
+			<soap:operation soapAction="" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:binding>
+	<wsdl:service name="VoterService">
+		<wsdl:port binding="ovs:VoterServiceSOAPBinding" name="VoterServiceSOAP">
+			<soap:address
+				location="http://localhost:8080/EasyVoteStatus/services/vote/VoterService" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
